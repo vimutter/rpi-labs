@@ -62,11 +62,10 @@ loop do
   value_red = analog_read(64)
   value_green = analog_read(65)
   value_blue = analog_read(66)
-
-  red.write(value_red * 100 / 256)
-  green.write(value_green * 100 / 256)
-  blue.write(value_blue * 100 / 256)
+  red.write(value_red * 100 / 256 +1)
+  green.write(value_green * 100 / 256 + 1)
+  blue.write(value_blue * 100 / 256 + 1)
   
   puts "ADC: #{value_red}, #{value_green}, #{value_blue}"
-  sleep 0.01
+  sleep 0.01 
 end
