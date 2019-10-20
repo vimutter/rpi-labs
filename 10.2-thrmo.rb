@@ -1,7 +1,6 @@
 gem 'ffi-wiring_pi'
 
 require 'ffi/wiring_pi'
-require 'math'
 
 FFI::WiringPi::GPIO.setup
 include FFI::WiringPi::GPIO
@@ -21,6 +20,6 @@ loop do
   tempK = 1/(1/(273.15 + 25) + Math.log(rt/10)/3950.0); #calculate temperature (Kelvin)
   tempC = tempK - 273.15; #calculate temperature (Celsius)
 
-  puts "ADC: #{value_blue}, volt: #{voltage}, rt: #{rt}, tempK: #{tempK}, tempC: #{tempC}"
+  print "\rADC: #{value_blue.to_i}, volt: #{voltage.ceil(2)}, rt: #{rt}, tempK: #{tempK}, tempC: #{tempC}"
   sleep 0.1
 end
