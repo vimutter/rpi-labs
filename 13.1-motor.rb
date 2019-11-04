@@ -16,16 +16,17 @@ FFI::WiringPi::GPIO.set_pin_mode 3, FFI::WiringPi::GPIO::OUTPUT
 FFI::WiringPi::GPIO.set_pin_mode 2, FFI::WiringPi::GPIO::OUTPUT
 FFI::WiringPi::GPIO.set_pin_mode 0, FFI::WiringPi::GPIO::OUTPUT
 
-enable_pin = FFI::WiringPi::SoftPwm::Pin.new
+enable_pin = FFI::WiringPi::SoftPwm::Pin.new 3
 loop do
   value = analog_read(64)
+
   print "\rADC: #{value.to_i}"
 
-  if value>128 
+  if value>132
     write 2, true
     write 0, false
     puts("turn Forward...")
-  elsif value<128 
+  elsif value<124 
     write 2, false
     write 0, true
     puts("turn Back...")
@@ -34,8 +35,8 @@ loop do
     write 0, false
     puts("Motor Stop...")
   end	
-  enable_pin.write (Math.abs(value - 128)/128.0) * 100
-  puts "The PWM duty cycle is #{Math.abs(value - 128)/128.0}"
+  enable_pin.write (((value - 128).abs/128.0) * 100).to_i
+  puts "The PWM duty cycle is #{((value - 128)/128.0)}"
 
   sleep 0.1
 end
