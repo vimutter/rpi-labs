@@ -12,17 +12,16 @@ define_method :read, &FFI::WiringPi::GPIO.method(:read)
 FFI::WiringPi::GPIO.set_pin_mode 0, FFI::WiringPi::GPIO::OUTPUT
 FFI::WiringPi::GPIO.set_pin_mode 1, FFI::WiringPi::GPIO::INPUT
 
-button = false
+button = true
 last = false
 loop do
-  value = read(0)
-  if value != last
+  value = read(1)
+  if last && value != last
     button = !button
-    last = value
-    write 1, button
+    write 0, button
   end
-
-  print "\rButton: #{button.to_i}"
+last = value
+  print "\rButton: #{button}    "
   
   sleep 0.1
 end
