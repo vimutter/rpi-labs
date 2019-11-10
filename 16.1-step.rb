@@ -26,8 +26,8 @@ loop do
 	    PINS.each do |pin|
         write pin, PHASE[i][pin]
 	    end
+      sleep 0.003
 	  end 
-    sleep 0.003
   end
 
   512.times do
@@ -35,8 +35,8 @@ loop do
 	    PINS.each do |pin|
         write pin, PHASE[3 - i][pin]
 	    end
+      sleep 0.003
 	  end 
-    sleep 0.003
   end
   sleep 2
 end
