@@ -14,14 +14,14 @@ enable_pin = FFI::WiringPi::SoftPwm::Pin.new 1, 0, 200
 
 loop do	
   (0..180).each do |angle|
-    enable_pin.write(5 + (angle/180.0)*20)
+    enable_pin.write(5 + (angle*20/180))
     puts "\r Angle: #{angle}    "
-    sleep 0.001
+    sleep 0.01
   end
   (0..180).each do |angle|
-    enable_pin.write(5 + ((180-angle)/180.0)*20)
+    enable_pin.write(5 + ((180-angle)*20/180))
     puts "\r Angle: #{angle}    "
-    sleep 0.001
+    sleep 0.01
   end
 
   sleep 0.1
