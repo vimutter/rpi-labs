@@ -30,7 +30,7 @@ FFI::WiringPi::GPIO.set_pin_mode clock_pin, FFI::WiringPi::GPIO::OUTPUT
 def shiftOut(dPin,cPin,val)
  8.times do |i|
  	write cPin, false
- 	write dPin, ((0x01&(val>>i)) == 0x01)
+ 	write dPin, (val>>i == 1)#((0x01&(val>>i)) == 0x01)
   sleep 0.00001
   write cPin, true
   sleep 0.00001
@@ -44,7 +44,7 @@ loop do
     shiftOut data_pin, clock_pin, x
     write latch_pin, true
     x <<= 1
-    sleep 0.1
+    sleep 0.01
   end
 
   x = 0x80
@@ -53,6 +53,6 @@ loop do
     shiftOut data_pin, clock_pin, x
     write latch_pin, true
     x >>= 1
-    sleep 0.1
+    sleep 0.01
   end  
 end
