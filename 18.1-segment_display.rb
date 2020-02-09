@@ -19,13 +19,14 @@ FFI::WiringPi::GPIO.set_pin_mode data_pin, FFI::WiringPi::GPIO::OUTPUT
 FFI::WiringPi::GPIO.set_pin_mode latch_pin, FFI::WiringPi::GPIO::OUTPUT
 FFI::WiringPi::GPIO.set_pin_mode clock_pin, FFI::WiringPi::GPIO::OUTPUT
 
-NUMBERS = [0xff,0,0xc0]#,0xf9,0xa4,0xb0,0x99,0x92,0x82,0xf8,0x80,0x90,0x88,0x83,0xc6,0xa1,0x86,0x8e]
+NUMBERS = [0xff,0,0xc0,0xf9,0xa4,0xb0,0x99,0x92,0x82,0xf8,0x80,0x90,0x88,0x83,0xc6,0xa1,0x86,0x8e]
 
 def shift_out(data_pin, clock_pin, val)
 	
   8.times do |i|
+    j = 7 - i
    	write clock_pin, false
-	write data_pin, (val[i..i] == 1)#((val>>i) % 2 == 1)
+	write data_pin, (val[j..j] == 1)#((val>>i) % 2 == 1)
     sleep 0.00001
     write clock_pin, true
     sleep 0.00001
