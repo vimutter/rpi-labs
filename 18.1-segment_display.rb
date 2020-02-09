@@ -32,19 +32,19 @@ def shift_out(data_pin, clock_pin, val)
 end
 
 loop do
-  x = 0x01
   NUMBERS.each do |n|
+    pp n
+    
     write latch_pin, false
     shift_out data_pin, clock_pin, n
     write latch_pin, true
-    sleep 0.01
+    sleep 1
   end
 
   NUMBERS.reverse.each do |n|
-  8.times do
     write latch_pin, false
     shift_out data_pin, clock_pin, n
     write latch_pin, true
-    sleep 0.01
+    sleep 1
   end  
 end
