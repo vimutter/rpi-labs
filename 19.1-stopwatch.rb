@@ -24,10 +24,10 @@ NUMBERS = [0xf9,0xa4,0xb0,0x99,0x92,0x82,0xf8,0x80,0x90]
 counter = 0
 
 def select_digit(digit)
- write display_pins[0], ((digit & 0x08) == 0x08)
- write display_pins[1], ((digit & 0x04) == 0x04)
- write display_pins[2], ((digit & 0x02) == 0x02)
- write display_pins[3], ((digit & 0x01) == 0x01)
+ write $display_pins[0], ((digit & 0x08) == 0x08)
+ write $display_pins[1], ((digit & 0x04) == 0x04)
+ write $display_pins[2], ((digit & 0x02) == 0x02)
+ write $display_pins[3], ((digit & 0x01) == 0x01)
 end
 
 def shift_out(data_pin, clock_pin, val)
