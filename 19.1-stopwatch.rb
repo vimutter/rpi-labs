@@ -11,12 +11,12 @@ define_method :write, &FFI::WiringPi::GPIO.method(:write)
 define_method :read, &FFI::WiringPi::GPIO.method(:read)
 define_method :analog_read, &FFI::WiringPi::GPIO.method(:analog_read)
 
-data_pin = 5
-latch_pin = 4
-clock_pin = 1
-display_pins = [0, 2, 3, 12]
+$data_pin = 5
+$latch_pin = 4
+$clock_pin = 1
+$display_pins = [0, 2, 3, 12]
 
-FFI::WiringPi::GPIO.set_pin_mode data_pin, FFI::WiringPi::GPIO::OUTPUT
+FFI::WiringPi::GPIO.set_pin_mode $data_pin, FFI::WiringPi::GPIO::OUTPUT
 FFI::WiringPi::GPIO.set_pin_mode latch_pin, FFI::WiringPi::GPIO::OUTPUT
 FFI::WiringPi::GPIO.set_pin_mode clock_pin, FFI::WiringPi::GPIO::OUTPUT
 
@@ -42,9 +42,9 @@ def shift_out(data_pin, clock_pin, val)
 end
 
 def push_data(data)
-  write latch_pin, false
-  shift_out data_pin, clock_pin, data
-  write latch_pin, true
+  write $latch_pin, false
+  shift_out $data_pin, $clock_pin, data
+  write $latch_pin, true
 end
 
 def display(number)
@@ -78,7 +78,7 @@ def timer(sig)
 end
 
 4.times do |i|
-  write display_pins[i], true 
+  write $display_pins[i], true 
 end
 
 Thread.new do
