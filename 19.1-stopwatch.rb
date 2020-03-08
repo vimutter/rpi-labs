@@ -80,8 +80,10 @@ end
 end
 
 Thread.new do
-  timer true
-  sleep 1
+  loop do 
+    timer true
+    sleep 1
+  end
 end
 
 print "\a"
