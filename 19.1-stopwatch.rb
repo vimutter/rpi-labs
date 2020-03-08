@@ -21,7 +21,7 @@ FFI::WiringPi::GPIO.set_pin_mode $latch_pin, FFI::WiringPi::GPIO::OUTPUT
 FFI::WiringPi::GPIO.set_pin_mode $clock_pin, FFI::WiringPi::GPIO::OUTPUT
 
 NUMBERS = [0xf9,0xa4,0xb0,0x99,0x92,0x82,0xf8,0x80,0x90]
-counter = 0
+$counter = 0
 
 def select_digit(digit)
  write $display_pins[0], ((digit & 0x08) == 0x08)
@@ -71,8 +71,8 @@ def display(number)
 end
 
 def timer(sig)
-  counter += 1
-  puts counter
+  $counter += 1
+  puts $counter
 end
 
 4.times do |i|
@@ -86,5 +86,5 @@ end
 
 print "\a"
 loop do
-  display counter 
+  display $counter 
 end
