@@ -71,10 +71,8 @@ def display(number)
 end
 
 def timer(sig)
-  if signal
-    counter += 1
-    puts counter
-  end
+  counter += 1
+  puts counter
 end
 
 4.times do |i|
