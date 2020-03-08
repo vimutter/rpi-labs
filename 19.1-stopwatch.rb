@@ -86,5 +86,6 @@ end
 
 print "\a"
 loop do
-  display $counter 
+  display $counter
+  sleep 0.01 
 end
