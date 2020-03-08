@@ -17,8 +17,8 @@ $clock_pin = 1
 $display_pins = [0, 2, 3, 12]
 
 FFI::WiringPi::GPIO.set_pin_mode $data_pin, FFI::WiringPi::GPIO::OUTPUT
-FFI::WiringPi::GPIO.set_pin_mode latch_pin, FFI::WiringPi::GPIO::OUTPUT
-FFI::WiringPi::GPIO.set_pin_mode clock_pin, FFI::WiringPi::GPIO::OUTPUT
+FFI::WiringPi::GPIO.set_pin_mode $latch_pin, FFI::WiringPi::GPIO::OUTPUT
+FFI::WiringPi::GPIO.set_pin_mode $clock_pin, FFI::WiringPi::GPIO::OUTPUT
 
 NUMBERS = [0xf9,0xa4,0xb0,0x99,0x92,0x82,0xf8,0x80,0x90]
 counter = 0
