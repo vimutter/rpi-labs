@@ -27,10 +27,10 @@ NUMBERS = [0xc0,0xf9,0xa4,0xb0,0x99,0x92,0x82,0xf8,0x80,0x90]
 $counter = 0
 
 def select_digit(digit)
-  write $display_pins[0], (digit == 4)
-  write $display_pins[1], (digit == 3)
-  write $display_pins[2], (digit == 2)
-  write $display_pins[3], (digit == 1)
+  write $display_pins[0], (digit != 4)
+  write $display_pins[1], (digit != 3)
+  write $display_pins[2], (digit != 2)
+  write $display_pins[3], (digit != 1)
 end
 
 def shift_out(data_pin, clock_pin, val)
@@ -38,39 +38,37 @@ def shift_out(data_pin, clock_pin, val)
     j = 7 - i
    	write clock_pin, false
 	  write data_pin, (val[j..j] == 1)#((val>>i) % 2 == 1)
-    sleep 0.001
+    sleep 0.0001
     write clock_pin, true
-    sleep 0.001
+    sleep 0.0001
   end
 end
 
 def push_data(data)
-  p data
   write $latch_pin, false
   shift_out $data_pin, $clock_pin, data
   write $latch_pin, true
 end
 
 def display(number)
-  p '--------------'
-  delays = 5
+  delays = 0.00001
   push_data 0xff
-  select_digit 4
+  select_digit 1
   push_data(NUMBERS[number % 10])
   sleep delays
 
   push_data 0xff
-  select_digit 3
+  select_digit 2
   push_data(NUMBERS[(number % 100) / 10])
   sleep delays
 
   push_data 0xff
-  select_digit 2
+  select_digit 3
   push_data(NUMBERS[(number % 1000) / 100])
   sleep delays
 
   push_data 0xff
-  select_digit 1
+  select_digit 4
   push_data(NUMBERS[(number % 10000) / 1000])
   sleep delays
 end
@@ -84,22 +82,17 @@ end
   write $display_pins[i], true 
 end
 
-#Thread.new do
-#  loop do 
-#    timer true
-#    sleep 1
-#  end
-#end
-#
-#print "\a"
-#loop do
-#  display $counter
-#  sleep 0.01
-#end
-#
-display 1
-display 2
-sleep 100
-display 2
-sleep 3
-display 3
+Thread.new do
+
+  loop do 
+    timer true
+    sleep 1
+  end
+end
+
+print "\a"
+loop do
+  display $counter
+  sleep 0.00001
+end
+
