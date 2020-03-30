@@ -52,7 +52,7 @@ def push_data(data)
 end
 
 def display(number)
-  delays = 1
+  delays = 0.01
   push_data 0xff
   select_digit 4
   push_data(NUMBERS[number % 10])
