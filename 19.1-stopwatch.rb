@@ -27,10 +27,10 @@ NUMBERS = [0xc0,0xf9,0xa4,0xb0,0x99,0x92,0x82,0xf8,0x80,0x90]
 $counter = 0
 
 def select_digit(digit)
- write $display_pins[0], ((digit & 0x08) == 0x08)
- write $display_pins[1], ((digit & 0x04) == 0x04)
- write $display_pins[2], ((digit & 0x02) == 0x02)
- write $display_pins[3], ((digit & 0x01) == 0x01)
+ write $display_pins[0], ((digit & 0x08) != 0x08)
+ write $display_pins[1], ((digit & 0x04) != 0x04)
+ write $display_pins[2], ((digit & 0x02) != 0x02)
+ write $display_pins[3], ((digit & 0x01) != 0x01)
 end
 
 def shift_out(data_pin, clock_pin, val)
@@ -38,9 +38,9 @@ def shift_out(data_pin, clock_pin, val)
     j = 7 - i
    	write clock_pin, false
 	  write data_pin, (val[i..i] == 1)#((val>>i) % 2 == 1)
-    sleep 0.00001
+    sleep 0.1
     write clock_pin, true
-    sleep 0.00001
+    sleep 0.1
   end
 end
 
@@ -51,7 +51,7 @@ def push_data(data)
 end
 
 def display(number)
-  delays = 0.001
+  delays = 0.2
   push_data 0xff
   select_digit 0x01
   push_data(NUMBERS[number % 10])
@@ -92,5 +92,5 @@ end
 print "\a"
 loop do
   display $counter
-  sleep 0.01 
+  sleep 1
 end
