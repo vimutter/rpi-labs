@@ -45,6 +45,7 @@ def shift_out(data_pin, clock_pin, val)
 end
 
 def push_data(data)
+  p data
   write $latch_pin, false
   shift_out $data_pin, $clock_pin, data
   write $latch_pin, true
@@ -85,7 +86,7 @@ end
 Thread.new do
   loop do 
     timer true
-    sleep 0.01
+    sleep 1
   end
 end
 
