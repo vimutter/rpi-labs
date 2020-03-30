@@ -52,6 +52,7 @@ def push_data(data)
 end
 
 def display(number)
+  p '--------------'
   delays = 0.01
   push_data 0xff
   select_digit 4
