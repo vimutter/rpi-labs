@@ -63,7 +63,7 @@ def push_data(data, data2)
 end
 
 loop do
-  500.times do |i|
+  100.times do |i|
     x = 0x80
     8.times do |j|
       push_data PICTURE[j], ~x
@@ -79,5 +79,6 @@ loop do
       x >>= 1
       sleep 0.001
     end
+    sleep 1
   end
 end
