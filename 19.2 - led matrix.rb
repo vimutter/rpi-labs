@@ -74,11 +74,12 @@ loop do
 
   18.times do |letter|
     x = 0x80
-    8.times do |j|
-      push_data DATA[letter*8 + j], ~x
-      x >>= 1
-      sleep 0.001
+    10.times do 
+      8.times do |j|
+        push_data DATA[letter*8 + j], ~x
+        x >>= 1
+        sleep 0.001
+      end
     end
-    sleep 1
   end
 end
