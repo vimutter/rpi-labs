@@ -66,7 +66,7 @@ loop do
   500.times do |i|
     x = 0x80
     8.times do |j|
-      push_data PICTURE[j], !x
+      push_data PICTURE[j], ~x
       x >>= 1
       sleep 0.001
     end
@@ -75,7 +75,7 @@ loop do
   18.times do |letter|
     x = 0x80
     8.times do |j|
-      push_data DATA[letter*8 + j], !x
+      push_data DATA[letter*8 + j], ~x
       x >>= 1
       sleep 0.001
     end
