@@ -53,7 +53,9 @@ end
 write LED, true # turn on LCD backlight
 write RW, false # allow writing to LCD
 # initialize LCD and return display instance
-display = FFI::WiringPi::LCD::Display.new(2, 16, 4, RS, EN, D4, D5, D6, D7, 0, 0, 0, 0) 
+display = FFI::WiringPi::LCD::Display.new rows: 2, 
+  cols: 16, bits: 4, rs: RS, strb: EN, d0: D4, d1: D5, d2: D6, d3: D7, 
+  d4: 0, d5: 0, d6: 0, d7: 0 
 
 loop do
   print_cpu_temperature display
