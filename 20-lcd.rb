@@ -12,10 +12,6 @@ define_method :write, &FFI::WiringPi::GPIO.method(:write)
 define_method :read, &FFI::WiringPi::GPIO.method(:read)
 define_method :analog_read, &FFI::WiringPi::GPIO.method(:analog_read)
 
-FFI::WiringPi::GPIO.set_pin_mode $data_pin, FFI::WiringPi::GPIO::OUTPUT
-FFI::WiringPi::GPIO.set_pin_mode $latch_pin, FFI::WiringPi::GPIO::OUTPUT
-FFI::WiringPi::GPIO.set_pin_mode $clock_pin, FFI::WiringPi::GPIO::OUTPUT
-
 FFI::WiringPi::LCD.setup
 
 #define pcf8574_address 0x27 // default I2C address of Pcf8574
@@ -31,8 +27,6 @@ D4 = BASE+4
 D5 = BASE+5
 D6 = BASE+6
 D7 = BASE+7
-
-require 'file'
 
 def print_cpu_temperature(display)
  
@@ -59,7 +53,7 @@ end
 write LED, true # turn on LCD backlight
 write RW, false # allow writing to LCD
 # initialize LCD and return display instance
-display = FFI::WiringPi::LCD.new(2, 16, 4, RS, EN, D4, D5, D6, D7, 0, 0, 0, 0) 
+display = FFI::WiringPi::LCD::Display.new(2, 16, 4, RS, EN, D4, D5, D6, D7, 0, 0, 0, 0) 
 
 loop do
   print_cpu_temperature display
