@@ -12,6 +12,8 @@ define_method :write, &FFI::WiringPi::GPIO.method(:write)
 define_method :read, &FFI::WiringPi::GPIO.method(:read)
 define_method :analog_read, &FFI::WiringPi::GPIO.method(:analog_read)
 
+# Used by LCD internally
+define_method :digitalWrite, &FFI::WiringPi::GPIO.method(:write)
 FFI::WiringPi::LCD.setup
 
 #define pcf8574_address 0x27 // default I2C address of Pcf8574
