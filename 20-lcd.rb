@@ -13,11 +13,11 @@ define_method :read, &FFI::WiringPi::GPIO.method(:read)
 define_method :analog_read, &FFI::WiringPi::GPIO.method(:analog_read)
 
 # Used by LCD internally
-define_method :digitalWrite, &FFI::WiringPi::GPIO.method(:write)
-FFI::WiringPi::LCD.setup
+#define_method :digitalWrite, &FFI::WiringPi::GPIO.method(:write)
+#FFI::WiringPi::LCD.setup
 
 #define pcf8574_address 0x27 // default I2C address of Pcf8574
-ADDRESS = 0x3F # default I2C address of Pcf8574A
+ADDRESS = 0x27#0x3F # default I2C address of Pcf8574A
 BASE = 64 # BASE is not less than 64
 # Define the output pins of the PCF8574, which are directly connected to the
 # LCD1602 pin.
@@ -37,13 +37,13 @@ def print_cpu_temperature(display)
  temp = fp.to_f / 1000.0
  puts "CPU's temperature : #{temp.ceil(2)}"
  display.set_position(0, 0)
- display.print(format("CPU:%.2fC",temp)) #Display CPU temperature on LCD
+ display.puts(format("CPU:%.2fC",temp)) #Display CPU temperature on LCD
 end
 
 def print_date(display) 
  display.set_position(0, 1)
  time = Time.now
- display.print(format("Time:%d:%d:%d",time.hour, time.min, time.sec))
+ display.puts(format("Time:%d:%d:%d",time.hour, time.min, time.sec))
 end
  
  FFI::WiringPi::Pcf8574.setup BASE, ADDRESS
@@ -59,6 +59,8 @@ display = FFI::WiringPi::LCD::Display.new rows: 2,
   cols: 16, bits: 4, rs: RS, strb: EN, d0: D4, d1: D5, d2: D6, d3: D7, 
   d4: 0, d5: 0, d6: 0, d7: 0 
 
+pp display.instance_variable_get(:@handle)
+display.turn_display true
 loop do
   print_cpu_temperature display
   print_date display
