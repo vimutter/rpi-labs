@@ -33,7 +33,7 @@ D7 = BASE+7
 def print_cpu_temperature(display)
  
  # CPU temperature data is stored in this directory.
- fp = File.read("/sys/class/thermal/thermal_zone0/temp", "r")
+ fp = File.read("/sys/class/thermal/thermal_zone0/temp")
  temp = fp.to_f / 1000.0
  puts("CPU's temperature : #{temp.ceil(2)}"
  display.set_position(0, 0)
@@ -43,7 +43,7 @@ end
 def print_date(display) 
  display.set_position(0, 1)
  time = Time.now
- display.print(format("Time:%d:%d:%d",time.hour, time.minute, time.second)
+ display.print(format("Time:%d:%d:%d",time.hour, time.min, time.sec)
 end
  
  FFI::WiringPi::Pcf8574.setup BASE, ADDRESS
