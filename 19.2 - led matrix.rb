@@ -75,6 +75,7 @@ loop do
   18.times do |letter|
     x = 0x80
     10.times do 
+	    x = 0x80
       8.times do |j|
         push_data DATA[letter*8 + j], ~x
         x >>= 1
