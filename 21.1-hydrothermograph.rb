@@ -33,8 +33,6 @@ class DHT
   end
   
   def fetch(wakeup_delay = 1)
-    mask = 0x80
-    idx = 0
     data = Array.new(600)
     FFI::WiringPi::GPIO.set_pin_mode @pin, FFI::WiringPi::GPIO::OUTPUT
     FFI::WiringPi::GPIO.write @pin, false
@@ -67,46 +65,17 @@ class DHT
         length += 1
       end
     end
-    p bits
 
-    exit 0
+    @bits[0] = bits[0..7].join.to_i(2)
+    @bits[1] = bits[8..15].join.to_i(2)
+    @bits[2] = bits[16..23].join.to_i(2)
+    @bits[3] = bits[24..31].join.to_i(2)
+    @bits[4] = bits[32..39].join.to_i(2)
     
-
-    wait_low_high
-    
-    5.times do |bit|
-      mask = 0x80
-      8.times do |shift|
-        start = wait_low_high
-        if (Time.now - start) > 0.00005
-          @bits[bit] |= mask
-        end        
-          
-        mask >>= 1
-      end
-    end
     FFI::WiringPi::GPIO.set_pin_mode @pin, FFI::WiringPi::GPIO::OUTPUT
     FFI::WiringPi::GPIO.write @pin, true
     
     DHTLIB_OK
-  end
-
-  def wait_low_high
-    timeout = DHTLIB_TIMEOUT
-    start = Time.now
-    until FFI::WiringPi::GPIO.read(@pin)
-      if (Time.now - start) > timeout
-        return DHTLIB_ERROR_TIMEOUT
-      end
-    end
-
-    start = Time.now
-    while FFI::WiringPi::GPIO.read(@pin)
-       if (Time.now - start) > timeout
-        return DHTLIB_ERROR_TIMEOUT
-      end
-    end
-    start
   end
 
   #Read DHT sensor, analyze the data of temperature and humidity
@@ -117,7 +86,7 @@ class DHT
       @temperature = DHTLIB_INVALID_VALUE
       return status
     end
-    @humidity = @bits[0]
+    @humidity = @bits[0] + + @bits[1] * 0.1
     @temperature = @bits[2] + @bits[3] * 0.1
     checksum = ((@bits[0] + @bits[1] + @bits[2] + @bits[3]) & 0xFF)
     unless @bits[4] == checksum
