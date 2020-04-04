@@ -45,9 +45,10 @@ class DHT
     FFI::WiringPi::GPIO.set_pin_mode @pin, FFI::WiringPi::GPIO::INPUT
 
     1000.times do |i|
-      data[i] = FFI::WiringPi::GPIO.read @pin 
+      data[i] = FFI::WiringPi::GPIO.read @pin
+      sleep 0.00002 
     end
-    pp data
+    p data
     exit 0
     
 
