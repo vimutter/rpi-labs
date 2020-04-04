@@ -35,14 +35,21 @@ class DHT
   def fetch(wakeup_delay = 1)
     mask = 0x80
     idx = 0
-
+    data = Array.new(1000)
     FFI::WiringPi::GPIO.set_pin_mode @pin, FFI::WiringPi::GPIO::OUTPUT
     FFI::WiringPi::GPIO.write @pin, false
     
-    sleep(wakeup_delay)
+    sleep 0.018
     FFI::WiringPi::GPIO.write @pin, true
-    
+    sleep 0.00004
     FFI::WiringPi::GPIO.set_pin_mode @pin, FFI::WiringPi::GPIO::INPUT
+
+    1000.times do |i|
+      data[i] = FFI::WiringPi::GPIO.read @pin 
+    end
+    pp data
+    exit 0
+    
 
     wait_low_high
     
