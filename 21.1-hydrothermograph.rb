@@ -48,9 +48,27 @@ class DHT
       data[i] = FFI::WiringPi::GPIO.read @pin
       sleep 0.0000009 
     end
+    bits = []
+    length = 0
     data.each do |el|
 	    print(el ? :+ : :-)
+      unless el # Start of the bit
+        if length > 0 # End of bit, now lets find it's value
+          if length > 5 # Usually 3, but depends on busyness of the system, we are in OS, remember
+            bits << 1
+          else
+            bits << 0
+          end 
+        end
+        length = 0
+      end
+
+      if el # actual data, longer it is more `1` it is
+        length += 1
+      end
     end
+    p bits
+
     exit 0
     
 
