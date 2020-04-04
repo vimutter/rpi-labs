@@ -36,8 +36,11 @@ class DHT
     data = Array.new(600)
     FFI::WiringPi::GPIO.set_pin_mode @pin, FFI::WiringPi::GPIO::OUTPUT
     FFI::WiringPi::GPIO.write @pin, false
-    
-    sleep 0.018
+    if @raw_bits.nil?
+      sleep 0.018
+    else
+	    sleep 0.014
+    end
     FFI::WiringPi::GPIO.write @pin, true
     #sleep 0.0000004
     FFI::WiringPi::GPIO.set_pin_mode @pin, FFI::WiringPi::GPIO::INPUT
@@ -46,18 +49,20 @@ class DHT
       data[i] = FFI::WiringPi::GPIO.read @pin
       sleep 0.0000009 
     end
-    bits = []
+    @raw_bits = []
     length = 0
+    @min = 3
     data.each do |el|
-	    print(el ? :+ : :-)
+	    #print(el ? :+ : :-)
       unless el # Start of the bit
         if length > 0 # End of bit, now lets find it's value
-          if length > 5 # Usually 3, but depends on busyness of the system, we are in OS, remember
-            bits << 1
+          if length > (@min+2) # Usually 3, but depends on busyness of the system, we are in OS, remember
+            @raw_bits << 1
           else
-            bits << 0
+            @raw_bits << 0
           end 
         end
+	length < @min ? (@min = length) : nil
         length = 0
       end
 
@@ -66,11 +71,12 @@ class DHT
       end
     end
 
-    @bits[0] = bits[0..7].join.to_i(2)
-    @bits[1] = bits[8..15].join.to_i(2)
-    @bits[2] = bits[16..23].join.to_i(2)
-    @bits[3] = bits[24..31].join.to_i(2)
-    @bits[4] = bits[32..39].join.to_i(2)
+    @raw_bits.shift 1
+    @bits[0] = @raw_bits[0..7].join.to_i(2)
+    @bits[1] = @raw_bits[8..15].join.to_i(2)
+    @bits[2] = @raw_bits[16..23].join.to_i(2)
+    @bits[3] = @raw_bits[24..31].join.to_i(2)
+    @bits[4] = @raw_bits[32..39].join.to_i(2)
     
     FFI::WiringPi::GPIO.set_pin_mode @pin, FFI::WiringPi::GPIO::OUTPUT
     FFI::WiringPi::GPIO.write @pin, true
@@ -86,9 +92,10 @@ class DHT
       @temperature = DHTLIB_INVALID_VALUE
       return status
     end
-    @humidity = @bits[0] + + @bits[1] * 0.1
+    @humidity = @bits[0] + @bits[1] * 0.01
     @temperature = @bits[2] + @bits[3] * 0.1
     checksum = ((@bits[0] + @bits[1] + @bits[2] + @bits[3]) & 0xFF)
+    p "#{@bits[4]} == #{checksum}"
     unless @bits[4] == checksum
       return DHTLIB_ERROR_CHECKSUM
     end
@@ -101,5 +108,5 @@ sensor = DHT.new 0 # PIN
 loop do
   sensor.read
   puts "T: #{sensor.temperature}, h: #{sensor.humidity}"
-  sleep 3
+  sleep 2
 end
