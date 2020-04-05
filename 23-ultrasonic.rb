@@ -12,6 +12,7 @@ define_method :write, &FFI::WiringPi::GPIO.method(:write)
 define_method :read, &FFI::WiringPi::GPIO.method(:read)
 define_method :analog_read, &FFI::WiringPi::GPIO.method(:analog_read)
 
+require 'bigdecimal'
 
 TRIGGER = 4
 DATA = 5
@@ -32,18 +33,18 @@ def pulse_in(pin)
 end
 
 def get_sonar   #get the measurement result of ultrasonic module with unit: cm
-    write TRIGGER, true
-    sleep 0.00001 
-    write TRIGGER, false
-    pingTime = pulseIn(DATA)
-    pingTime * 340.0 / 2.0 / 10000.0
+  write TRIGGER, true
+  sleep 0.00001 
+  write TRIGGER, false
+  pingTime = BigDecimal(pulse_in(DATA))
+  pingTime * 340.0 / 2.0 / 10000.0
 end
 
 FFI::WiringPi::GPIO.set_pin_mode TRIGGER, FFI::WiringPi::GPIO::OUTPUT
 FFI::WiringPi::GPIO.set_pin_mode DATA, FFI::WiringPi::GPIO::INPUT
 
 loop do
-  p get_sonar
+  p get_sonar.to_s('F')
   sleep 0.5 
 end
 
