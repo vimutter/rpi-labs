@@ -32,12 +32,12 @@ class Keypad
       FFI::WiringPi::GPIO.set_pin_mode pin, FFI::WiringPi::GPIO::OUTPUT
     end
     @columns.each_with_index do |column, index|
-      FFI::WiringPi::GPIO.write column, false
+      FFI::WiringPi::GPIO.write column, true
       @rows.each_with_index do |row, index_row|
         @data[index] ||= {}
         @data[index][index_row] = FFI::WiringPi::GPIO.read row
       end
-      FFI::WiringPi::GPIO.write column, true
+      FFI::WiringPi::GPIO.write column, false
     end
   end
 
