@@ -36,7 +36,7 @@ def get_sonar   #get the measurement result of ultrasonic module with unit: cm
   write TRIGGER, true
   sleep 0.00001 
   write TRIGGER, false
-  pingTime = BigDecimal(pulse_in(DATA))
+  pingTime = BigDecimal(pulse_in(DATA), 10)
   pingTime * 340.0 / 2.0 / 10000.0
 end
 
