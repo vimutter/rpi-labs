@@ -72,8 +72,8 @@ class DHT
     @bits[3] = bits[24..31].join.to_i(2)
     @bits[4] = bits[32..39].join.to_i(2)
     
-    FFI::WiringPi::GPIO.set_pin_mode @pin, FFI::WiringPi::GPIO::OUTPUT
-    FFI::WiringPi::GPIO.write @pin, true
+    # FFI::WiringPi::GPIO.set_pin_mode @pin, FFI::WiringPi::GPIO::OUTPUT
+    # FFI::WiringPi::GPIO.write @pin, true
     
     DHTLIB_OK
   end
@@ -86,7 +86,7 @@ class DHT
       @temperature = DHTLIB_INVALID_VALUE
       return status
     end
-    @humidity = @bits[0] + + @bits[1] * 0.1
+    @humidity = @bits[0] + @bits[1] * 0.1
     @temperature = @bits[2] + @bits[3] * 0.1
     checksum = ((@bits[0] + @bits[1] + @bits[2] + @bits[3]) & 0xFF)
     unless @bits[4] == checksum
