@@ -37,15 +37,15 @@ def get_sonar   #get the measurement result of ultrasonic module with unit: cm
   sleep 0.00001 
   write TRIGGER, false
   pingTime = BigDecimal(pulse_in(DATA), 10)
-  pingTime * 340.0 / 2.0 / 10000.0
+  pingTime * 17000 
 end
 
 FFI::WiringPi::GPIO.set_pin_mode TRIGGER, FFI::WiringPi::GPIO::OUTPUT
 FFI::WiringPi::GPIO.set_pin_mode DATA, FFI::WiringPi::GPIO::INPUT
 
 loop do
-  p get_sonar.to_s('F')
-  sleep 0.5 
+	print "\r#{get_sonar.ceil(2).to_s('F')}"
+  sleep 0.1 
 end
 
 
